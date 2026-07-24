@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>古文注释练习</title>
+<style>
+*{box-sizing:border-box;}
+body{
+    margin:0;
+    font-family:"Microsoft JhengHei",sans-serif;
+    background:linear-gradient(135deg,#eef2ff,#f8fafc);
+    display:flex;
+    height:100vh;
+}
+.sidebar{
+    width:260px;
+    background:rgba(30,41,59,0.95);
+    color:white;
+    padding:30px 20px;
+    box-shadow:4px 0 20px rgba(0,0,0,.15);
+}
+.sidebar h2{
+    margin-top:0;
+}
+.lesson{
+    background:rgba(255,255,255,.1);
+    padding:16px;
+    border-radius:14px;
+    transition:.2s;
+    border:1px solid rgba(255,255,255,.15);
+}
+.lesson:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,.15);
+}
+
+.main{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+}
+
+.card{
+    width:min(900px,100%);
+    background:white;
+    border-radius:24px;
+    padding:50px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+.progress{
+    color:#64748b;
+    font-size:18px;
+    margin-bottom:20px;
+}
+
+.question{
+    min-height:80px;
+    font-size:38px;
+    font-weight:bold;
+    color:#1e293b;
+    margin-bottom:30px;
+}
+
+input{
+    width:100%;
+    padding:18px;
+    font-size:20px;
+    border-radius:12px;
+    border:2px solid #dbeafe;
+    outline:none;
+    transition:.2s;
+}
+
+input:focus{
+    border-color:#60a5fa;
+    box-shadow:0 0 15px rgba(96,165,250,.2);
+}
+
+button{
+    margin-top:25px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:15px 36px;
+    border-radius:12px;
+    font-size:18px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button:hover{
+    background:#1d4ed8;
+    transform:translateY(-1px);
+}
+
+.answer{
+    margin-top:30px;
+    padding:20px;
+    background:#f0fdf4;
+    border-left:5px solid #22c55e;
+    border-radius:10px;
+    font-size:22px;
+    color:#166534;
+    min-height:40px;
+}
+
+.tip{
+    margin-top:15px;
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.highlight{
+    background:#fde68a;
+    padding:2px 6px;
+    border-radius:6px;
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>📚 古文练习</h2>
+    <div class="lesson">
+        <strong>第一课</strong><br>
+        庖丁解牛
+    </div>
+</div>
+
+<div class="main">
+<div class="card">
+    <div class="progress"></div>
+    <div class="question"></div>
+
+    <input id="userInput" placeholder="请输入注释...">
+
+    <button id="btn" onclick="nextStep()">提交</button>
+
+    <div class="tip">提示：按 Enter 键也可以提交 / 下一题</div>
+
+    <div class="answer"></div>
+</div>
+</div>
+
+<script>
+
+let questions=[
+["踦","通“倚”，抵住、支撑"],
+["砉然响然","牛只皮骨分离的声音"],
+["奏刀騞然","进刀时发出的声音"],
+["奏刀*騞*然","象声词，比“砉然”声音更大"],
+["中音","合乎音律"],
+["嘻","赞叹声"],
+["盖（he）","通“盍”，怎么"],
+["进乎技艺","超过技术了"],
+["*进*乎技艺","超过"],
+["臣以神*遇*而不以目视","会合、接触"],
+["*官知*止而神欲行","耳、眼等器官的感觉"],
+["官知止而*神欲*行","精神活动。意思是解牛时主要不是靠感觉器官，而是只用精神活动来行事"],
+["天理","指牛体天生的生理（肌理）结构"],
+["批大郤（xi）","劈入大的缝隙"],
+["*批*大郤","劈"],
+["批大*郤*","空隙，指牛骨节间的空隙"],
+["导大窾","顺着（骨节间的）空隙进刀"],
+["*导*大窾","顺着、循着，这里有导入的意思"],
+["导大*窾*","空，指骨节空穴处"],
+["因其固然","依照牛体原本的结构"],
+["*因*其固然","顺着"],
+["因其*固然*","本来的结构"],
+["*技*经肯綮之未尝","应作“枝”。指枝脉"],
+["技*经*肯綮之未尝","经脉"],
+["*技经*肯綮之未尝","犹言经络"],
+["技经*肯*綮之未尝","筋肉聚处"],
+["𮝴（gu）","大骨"],
+["族庖","一般厨师"],
+["*族*庖","众，一般"],
+
+["新发于硎","刀刚在磨刀石上磨过。形容非常锋利或初露锋芒"],
+["*新发*于硎","刚磨过"],
+["新发于*硎*","磨刀石"],
+["无厚","没有厚度。形容刀口薄而锋利"],
+["*恢恢*乎其于游刃必有余地矣","宽绰"],
+["恢恢乎*其*于游刃必有余地矣","代词，代上文的“间”"],
+["恢恢乎其于*游刃*必有余地矣","运转、活动刀子"],
+["怵然","警惕的样子"],
+["视为止，行为迟","目光为之停留（指目光专注），动作为之缓慢下来"],
+["视*为*止，行为迟","因"],
+["视为*止*，行为迟","停留"],
+["视为止，行为*迟*","放慢"],
+["謋","象声词。这里形容牛体骨肉迅速分离的声音"],
+["委地","散落在地上"],
+["踌躇满志","从容自得，心满意足的样子"],
+["善刀","拭刀"],
+["*善*刀","通“缮”，拭、擦的意思"],
+
+];
+
+
+let current=0;
+let showing=false;
+
+function shuffle(arr){
+ for(let i=arr.length-1;i>0;i--){
+   let j=Math.floor(Math.random()*(i+1));
+   [arr[i],arr[j]]=[arr[j],arr[i]];
+ }
+}
+
+shuffle(questions);
+
+function render(){
+ document.querySelector(".progress").innerText=
+ `${current+1} / ${questions.length}`;
+
+ let q=questions[current][0];
+ q=q.replace(/\*(.*?)\*/g,'<span class="highlight">$1</span>');
+
+ document.querySelector(".question").innerHTML=q;
+ document.querySelector(".answer").innerHTML="";
+ document.getElementById("userInput").value="";
+ document.getElementById("btn").innerText="提交";
+ document.getElementById("userInput").focus();
+ showing=false;
+}
+
+function nextStep(){
+ if(!showing){
+   document.querySelector(".answer").innerHTML=
+   "<b>标准答案：</b>"+questions[current][1];
+   document.getElementById("btn").innerText="下一题";
+   showing=true;
+ }else{
+   current++;
+   if(current>=questions.length){
+      alert("🎉 恭喜完成全部题目！");
+      shuffle(questions);
+      current=0;
+   }
+   render();
+ }
+}
+
+// Enter 键功能
+document.getElementById("userInput").addEventListener(
+"keydown",
+function(e){
+    if(e.key==="Enter"){
+        nextStep();
+    }
+});
+
+render();
+</script>
+
+</body>
+</html>
