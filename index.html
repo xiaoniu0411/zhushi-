@@ -181,11 +181,7 @@ button:hover{
         ←
     </button>
 
-    <div>
-        <strong>
-            第一课 · 庖丁解牛
-        </strong>
-    </div>
+    <div id="lessonTitle"></div>
 
     <button class="lessonBtn">
         →
@@ -195,10 +191,7 @@ button:hover{
 
 <div class="sidebar">
     <h2>📚 古文练习</h2>
-    <div class="lesson">
-        <strong>第一课</strong><br>
-        庖丁解牛
-    </div>
+  <div class="lesson" id="sideLesson"></div>
 </div>
 
 <div class="main">
@@ -217,6 +210,7 @@ button:hover{
 </div>
 
 <script>
+let lessonName="第一课 · 庖丁解牛";
 
 let questions=[
 ["踦","通“倚”，抵住、支撑"],
@@ -283,6 +277,14 @@ function shuffle(arr){
 shuffle(questions);
 
 function render(){
+     document.getElementById("lessonTitle").innerHTML=
+ `<strong>${lessonName}</strong>`;
+
+ document.getElementById("sideLesson").innerHTML=
+ `
+ <strong>第一课</strong><br>
+ 庖丁解牛
+ `;
  document.querySelector(".progress").innerText=
  `${current+1} / ${questions.length}`;
 
