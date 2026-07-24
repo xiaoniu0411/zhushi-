@@ -222,7 +222,11 @@ function render(){
  document.querySelector(".answer").innerHTML="";
  document.getElementById("userInput").value="";
  document.getElementById("btn").innerText="提交";
- document.getElementById("userInput").focus();
+let isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+if(!isMobile){
+    document.getElementById("userInput").focus();
+}
  showing=false;
 }
 
