@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>古文注释练习（多课程版）</title>
+<style>
+body{font-family:Microsoft JhengHei,sans-serif;margin:0;background:#eef2ff}
+.wrap{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1e293b;color:#fff;padding:20px}
+.lesson{padding:12px;border-radius:10px;margin:8px 0;cursor:pointer;background:#334155}
+.lesson.active{background:#2563eb}
+.main{flex:1;padding:30px}
+.topbar{display:none;position:fixed;top:0;left:0;right:0;background:#fff;padding:12px 16px;
+box-shadow:0 2px 10px rgba(0,0,0,.1);align-items:center;justify-content:space-between}
+.card{background:#fff;border-radius:18px;padding:30px;max-width:900px;margin:auto}
+.question{font-size:34px;font-weight:bold;margin:20px 0}
+.highlight{background:#fde68a;padding:2px 5px;border-radius:4px}
+.answer{margin-top:20px;padding:15px;background:#ecfdf5;border-left:5px solid #22c55e}
+button{padding:10px 20px}
+input{width:100%;padding:12px;font-size:18px}
+@media(max-width:768px){
+.sidebar{display:none}
+.wrap{display:block}
+.topbar{display:flex}
+.main{padding-top:80px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+<button onclick="prevLesson()">←</button>
+<div id="mobileTitle"></div>
+<button onclick="nextLessonBtn()">→</button>
+</div>
+
+<div class="wrap">
+<div class="sidebar">
+<h2>📚 古文练习</h2>
+<div id="lessonList"></div>
+</div>
+
+<div class="main">
+<div class="card">
+<div id="progress"></div>
+<div id="question" class="question"></div>
+<input id="userInput" placeholder="请输入注释">
+<br><br>
+<button onclick="submitQuestion()" id="submitBtn">提交</button>
+<div class="answer" id="answer"></div>
+</div>
+</div>
+</div>
+
+<script>
+const lessons=[
+{
+title:"第一课 · 庖丁解牛",
+questions:[
+["踦","通“倚”，抵住、支撑"],
+["砉然响然","牛只皮骨分离的声音"],
+["*进*乎技艺","超过"]
+]
+},
+{
+title:"第二课 · 公输",
+questions:[
+["起","出发，动身"],
+["何命焉为","有什么见教呢？"],
+["文轩","华美的车子"],
+["*文*轩","装饰"],
+["文*轩*","古代一种有围棚或帷幕的车"],
+["守圉","墨子守城的方法"],
+["守*圉*","通“御”，防御"]
+]
+}
+];
+
+let lessonIndex=0,current=0,showing=false,questions=[];
+
+function shuffle(a){
+for(let i=a.length-1;i>0;i--){
+let j=Math.floor(Math.random()*(i+1));
+[a[i],a[j]]=[a[j],a[i]];
+}
+}
+
+function loadLesson(i){
+lessonIndex=i;
+questions=[...lessons[i].questions];
+shuffle(questions);
+current=0;
+renderLessonList();
+render();
+}
+
+function renderLessonList(){
+let html="";
+lessons.forEach((l,i)=>{
+html+=`<div class="lesson ${i===lessonIndex?'active':''}" onclick="loadLesson(${i})">${l.title}</div>`;
+});
+lessonList.innerHTML=html;
+mobileTitle.innerHTML="<b>"+lessons[lessonIndex].title+"</b>";
+}
+
+function render(){
+progress.innerText=`${current+1} / ${questions.length}`;
+let q=questions[current][0].replace(/\*(.*?)\*/g,'<span class="highlight">$1</span>');
+question.innerHTML=q;
+answer.innerHTML="";
+userInput.value="";
+submitBtn.innerText="提交";
+showing=false;
+}
+
+function submitQuestion(){
+if(!showing){
+answer.innerHTML="<b>标准答案：</b>"+questions[current][1];
+submitBtn.innerText="下一题";
+showing=true;
+}else{
+current++;
+if(current>=questions.length){
+alert("本课完成！");
+current=0;
+shuffle(questions);
+}
+render();
+}
+}
+
+function prevLesson(){
+lessonIndex=(lessonIndex-1+lessons.length)%lessons.length;
+loadLesson(lessonIndex);
+}
+
+function nextLessonBtn(){
+lessonIndex=(lessonIndex+1)%lessons.length;
+loadLesson(lessonIndex);
+}
+
+userInput.addEventListener("keydown",e=>{
+if(e.key==="Enter")submitQuestion();
+});
+
+loadLesson(0);
+</script>
+</body>
+</html>
