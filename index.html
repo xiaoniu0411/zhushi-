@@ -175,39 +175,30 @@ button:hover{
 </head>
 <body>
 
-<div class="lessonBar">
-
-    <button class="lessonBtn">
-        ←
-    </button>
-
-    <div id="lessonTitle"></div>
-
-    <button class="lessonBtn">
-        →
-    </button>
-
+<div class="topbar">
+<button onclick="prevLesson()">←</button>
+<div id="mobileTitle"></div>
+<button onclick="nextLessonBtn()">→</button>
 </div>
 
+<div class="wrap">
 <div class="sidebar">
-    <h2>📚 古文练习</h2>
-  <div class="lesson" id="sideLesson"></div>
+<h2>📚 古文练习</h2>
+<div id="lessonList"></div>
 </div>
 
 <div class="main">
 <div class="card">
-    <div class="progress"></div>
-    <div class="question"></div>
-
-    <input id="userInput" placeholder="请输入注释...">
-
-    <button id="btn" onclick="nextStep()">提交</button>
-
-    <div class="tip">提示：按 Enter 键也可以提交 / 下一题</div>
-
-    <div class="answer"></div>
+<div id="progress"></div>
+<div id="question" class="question"></div>
+<input id="userInput" placeholder="请输入注释">
+<br><br>
+<button onclick="submitQuestion()" id="submitBtn">提交</button>
+<div class="answer" id="answer"></div>
 </div>
 </div>
+</div>
+
 
 <script>
 const lessons=[
