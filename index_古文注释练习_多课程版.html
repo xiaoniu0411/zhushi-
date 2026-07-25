@@ -80,10 +80,45 @@ input:focus{
     box-shadow:0 0 15px rgba(96,165,250,.2);
 }
 @media(max-width:768px){
-.sidebar{display:none}
-.wrap{display:block}
-.topbar{display:flex}
-.main{padding-top:80px}
+
+    body{
+        display:block;
+        height:auto;
+    }
+
+    .sidebar{
+        display:none;
+    }
+
+    .lessonBar{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+
+        background:white;
+        padding:15px 20px;
+        box-shadow:0 5px 15px rgba(0,0,0,.08);
+        z-index:999;
+    }
+
+    .main{
+        padding:20px;
+        margin-top:70px;
+        align-items:flex-start;
+    }
+
+    .card{
+        padding:30px;
+    }
+
+    .question{
+        font-size:30px;
+    }
 }
 </style>
 </head>
